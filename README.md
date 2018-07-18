@@ -1,52 +1,31 @@
-Qt5 QPA webOS plugin
-====================
+Qt5 webOS SDK
+=============
 
-Build requirements
-------------------
-- Linux PC
+Requirements
+------------
+- Linux amd64 PC
 - PalmSDK
 
-How to build Qt
----------------
+Source
+------
+[qt5-webos-sdk](https://gitlab.com/nizovn/qt5-webos-sdk)
 
-Download Qt sources (**qt-everywhere-opensource-src-5.9.5.tar.xz**) from [official site](http://download.qt.io/official_releases/qt/5.9/5.9.5/single/) and untar it somewhere.
+Description
+-----------
+qt5-webos-sdk is a set of tools needed to compile qt5 applications for webOS devices.
+It contains linaro cross-compilation toolchain, Qt5 framework libraries and host tools,
+necessary libraries for compilation for webOS devices.
+Applications compiled using this SDK will have to depend on [com.nizovn.qt5sdk](https://gitlab.com/nizovn/com.nizovn.qt5sdk) package,
+which set up required environment in jailer for applications to run properly.
+Applications will have to specify "qt5sdk" property in their appinfo.json file.
 
-    mkdir /home/nizovn/webos/qt5/qt5.9
-    tar xvf qt-everywhere-opensource-src-5.9.5.tar.xz -C /home/nizovn/webos/qt5/qt5.9
+Installation
+------------
+This SDK can be installed on Ubuntu/Debian based distrubutions using deb package:
 
-Download and untar gcc cross toolchain (**gcc-linaro-4.8-2015.06-x86\_64\_arm-linux-gnueabi.tar.xz**) from [linaro site](https://releases.linaro.org/archive/15.06/components/toolchain/binaries/4.8/arm-linux-gnueabi/).
+    sudo dpkg -i qt5-webos-sdk_5.9.5-0.deb
 
-    tar xvf gcc-linaro-4.8-2015.06-x86_64_arm-linux-gnueabi.tar.xz -C /home/nizovn/webos/qt5/qt5.9
-Copy **files/linux-webos-arm-gnueabi-g++** directory to **qt-everywhere-opensource-src-5.9.1/qtbase/mkspecs**. Edit **QT5\_WEBOS\_PATH** variable in **qmake.conf** to your directory.
-
-Copy libraries and headers required for building Qt.
-
-    cp -Rf files/device /home/nizovn/webos/qt5/qt5.9
-
-Apply required patches.
-
-    patch /home/nizovn/webos/qt5/qt5.9/qt-everywhere-opensource-src-5.9.5/qtwebengine/src/core/config/embedded_linux.pri files/embedded_linux.pri.patch
-    patch /home/nizovn/webos/qt5/qt5.9/qt-everywhere-opensource-src-5.9.5/qtbase/src/corelib/kernel/qcoreapplication.cpp files/qcoreapplication.cpp.patch
-    patch /home/nizovn/webos/qt5/qt5.9/qt-everywhere-opensource-src-5.9.5/qtbase/src/corelib/io/qstandardpaths_unix.cpp files/qstandardpaths_unix.cpp.patch
-    patch /home/nizovn/webos/qt5/qt5.9/qt-everywhere-opensource-src-5.9.5/qtbase/src/gui/opengl/qopengles2ext.h files/qopengles2ext.h.patch
-    patch /home/nizovn/webos/qt5/qt5.9/qt-everywhere-opensource-src-5.9.5/qtbase/src/network/ssl/qsslsocket_openssl.cpp files/qsslsocket_openssl.cpp.patch
-
-Copy configure script (adjust build directory path) into Qt directory and execute it.
-
-    cp files/configurePalmHD.5.9.sh /home/nizovn/webos/qt5/qt5.9/qt-everywhere-opensource-src-5.9.5
-    cd /home/nizovn/webos/qt5/qt5.9/qt-everywhere-opensource-src-5.9.5
-    ./configurePalmHD.5.9.sh
-
-Build Qt.
-
-    make -j8
-    make install
-
-How to build webos plugin
--------------------------
-
-    cd webos
-    /home/nizovn/webos/qt5/qt5.9/runtime/host/bin/qmake -o Makefile webos.pro
-    make
-    make install
+Or, on any distrubition by unzipping tar.xz archive into any directory, and adjusting
+corresponding paths in qt5/host/bin/qt.conf and QT5\_WEBOS\_PATH variable in
+qt5/host/mkspecs/linux-webos-arm-gnueabi-g++/qmake.conf file.
 

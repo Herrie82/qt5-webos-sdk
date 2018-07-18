@@ -1,0 +1,11 @@
+Package: qt5-webos-sdk
+Version: 5.9.5-0
+Section: PalmTools
+Priority: optional
+Architecture: amd64
+Depends: palm-sdk:i386
+Maintainer: Nikolay Nizov <nizovn@gmail.com>
+Description: Qt5 webOS SDK
+ Qt5 webOS SDK: linaro cross-compilation toolchain,
+   Qt5 framework libraries and host tools,
+   necessary libraries for compilation for webOS devices.

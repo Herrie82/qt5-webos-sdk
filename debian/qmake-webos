@@ -1,0 +1,3 @@
+#!/bin/sh -
+# execute qmake from it's own directory at it contains qt.conf
+exec /opt/qt5-webos-sdk/qt5/host/bin/qmake "$@"
