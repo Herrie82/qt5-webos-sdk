@@ -1,0 +1,15 @@
+--- qopengltextureglyphcache.cpp_orig	2018-10-30 22:36:19.094729684 +0300
++++ qopengltextureglyphcache.cpp	2018-10-30 22:41:17.933170778 +0300
+@@ -251,7 +251,12 @@
+ #else
+         const GLenum format = GL_ALPHA;
+ #endif
++#if defined(Q_OS_WEBOS)
++        for (int i = 0; i < imgHeight; ++i)
++            funcs->glTexSubImage2D(GL_TEXTURE_2D, 0, tx, ty+i, imgWidth, 1, format, GL_UNSIGNED_BYTE, img.constScanLine(i));
++#else
+         funcs->glTexSubImage2D(GL_TEXTURE_2D, 0, tx, ty, imgWidth, imgHeight, format, GL_UNSIGNED_BYTE, img.constBits());
++#endif
+     }
+ }
+ 

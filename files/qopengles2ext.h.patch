@@ -1,3 +1,11 @@
-21a22,23
-> #include <KHR/khrplatform.h>
-> 
+--- qopengles2ext.h_orig	2018-10-30 23:39:51.660596169 +0300
++++ qopengles2ext.h	2018-10-30 23:40:35.846893135 +0300
+@@ -19,6 +19,8 @@
+  * If any other extensions using these types are defined,
+  * the typedefs must move out of this block and be shared.
+  */
++#include <KHR/khrplatform.h>
++
+ typedef khronos_int64_t GLint64;
+ typedef khronos_uint64_t GLuint64;
+ typedef struct __GLsync *GLsync;

@@ -1,96 +1,148 @@
-54a55,59
-> #ifdef Q_OS_WEBOS
-> #define WEBOS_APPDATA_PATH "/media/internal/appdata/com.nizovn.qt5"
-> #define WEBOS_HOME_PATH "/media/internal"
-> #endif // Q_OS_WEBOS
-> 
-82a88,94
-> 
-> #ifdef Q_OS_WEBOS
->         QString homePath = QLatin1String(WEBOS_APPDATA_PATH);
-> #else
->         QString homePath = QDir::homePath();
-> #endif // Q_OS_WEBOS
-> 
-84c96
-<             xdgCacheHome = QDir::homePath() + QLatin1String("/.qttest/cache");
----
->             xdgCacheHome = homePath + QLatin1String("/.qttest/cache");
-86c98
-<             xdgCacheHome = QDir::homePath() + QLatin1String("/.cache");
----
->             xdgCacheHome = homePath + QLatin1String("/.cache");
-95a108,114
-> 
-> #ifdef Q_OS_WEBOS
->         QString homePath = QLatin1String(WEBOS_APPDATA_PATH);
-> #else
->         QString homePath = QDir::homePath();
-> #endif // Q_OS_WEBOS
-> 
-97c116
-<             xdgDataHome = QDir::homePath() + QLatin1String("/.qttest/share");
----
->             xdgDataHome = homePath + QLatin1String("/.qttest/share");
-99c118
-<             xdgDataHome = QDir::homePath() + QLatin1String("/.local/share");
----
->             xdgDataHome = homePath + QLatin1String("/.local/share");
-109a129,135
-> 
-> #ifdef Q_OS_WEBOS
->         QString homePath = QLatin1String(WEBOS_APPDATA_PATH);
-> #else
->         QString homePath = QDir::homePath();
-> #endif // Q_OS_WEBOS
-> 
-111c137
-<             xdgConfigHome = QDir::homePath() + QLatin1String("/.qttest/config");
----
->             xdgConfigHome = homePath + QLatin1String("/.qttest/config");
-113c139
-<             xdgConfigHome = QDir::homePath() + QLatin1String("/.config");
----
->             xdgConfigHome = homePath + QLatin1String("/.config");
-174a201,207
-> 
-> #ifdef Q_OS_WEBOS
->         QString homePath = QLatin1String(WEBOS_APPDATA_PATH);
-> #else
->         QString homePath = QDir::homePath();
-> #endif // Q_OS_WEBOS
-> 
-176c209
-<         xdgConfigHome = QDir::homePath() + QLatin1String("/.config");
----
->         xdgConfigHome = homePath + QLatin1String("/.config");
-238a272,274
-> #ifdef Q_OS_WEBOS
->         path = QLatin1String(WEBOS_HOME_PATH);
-> #endif // Q_OS_WEBOS
-241a278,280
-> #ifdef Q_OS_WEBOS
->         path = QLatin1String(WEBOS_HOME_PATH);
-> #endif // Q_OS_WEBOS
-244a284,286
-> #ifdef Q_OS_WEBOS
->         path = QLatin1String(WEBOS_HOME_PATH);
-> #endif // Q_OS_WEBOS
-252a295,297
-> #ifdef Q_OS_WEBOS
->         path = QLatin1String(WEBOS_HOME_PATH);
-> #endif // Q_OS_WEBOS
-256a302,304
-> #ifdef Q_OS_WEBOS
->         path = QLatin1String(WEBOS_HOME_PATH);
-> #endif // Q_OS_WEBOS
-259a308,310
-> #ifdef Q_OS_WEBOS
->         path = QLatin1String(WEBOS_HOME_PATH) + QLatin1String("/downloads");
-> #endif // Q_OS_WEBOS
-343a395,399
-> #ifdef Q_OS_WEBOS
->         dirs = xdgDataDirs();
->         for (int i = 0; i < dirs.count(); ++i)
->             dirs[i].append(QLatin1String("/fonts"));
-> #endif // Q_OS_WEBOS
+--- qstandardpaths_unix.cpp_orig	2018-10-30 23:37:25.496230341 +0300
++++ qstandardpaths_unix.cpp	2018-10-30 23:37:33.926905336 +0300
+@@ -52,6 +52,11 @@
+ 
+ #ifndef QT_NO_STANDARDPATHS
+ 
++#ifdef Q_OS_WEBOS
++#define WEBOS_APPDATA_PATH "/media/internal/appdata/com.nizovn.qt5"
++#define WEBOS_HOME_PATH "/media/internal"
++#endif // Q_OS_WEBOS
++
+ QT_BEGIN_NAMESPACE
+ 
+ static void appendOrganizationAndApp(QString &path)
+@@ -80,10 +85,17 @@
+     {
+         // http://standards.freedesktop.org/basedir-spec/basedir-spec-0.6.html
+         QString xdgCacheHome = QFile::decodeName(qgetenv("XDG_CACHE_HOME"));
++
++#ifdef Q_OS_WEBOS
++        QString homePath = QLatin1String(WEBOS_APPDATA_PATH);
++#else
++        QString homePath = QDir::homePath();
++#endif // Q_OS_WEBOS
++
+         if (isTestModeEnabled())
+-            xdgCacheHome = QDir::homePath() + QLatin1String("/.qttest/cache");
++            xdgCacheHome = homePath + QLatin1String("/.qttest/cache");
+         if (xdgCacheHome.isEmpty())
+-            xdgCacheHome = QDir::homePath() + QLatin1String("/.cache");
++            xdgCacheHome = homePath + QLatin1String("/.cache");
+         if (type == QStandardPaths::CacheLocation)
+             appendOrganizationAndApp(xdgCacheHome);
+         return xdgCacheHome;
+@@ -93,10 +105,17 @@
+     case GenericDataLocation:
+     {
+         QString xdgDataHome = QFile::decodeName(qgetenv("XDG_DATA_HOME"));
++
++#ifdef Q_OS_WEBOS
++        QString homePath = QLatin1String(WEBOS_APPDATA_PATH);
++#else
++        QString homePath = QDir::homePath();
++#endif // Q_OS_WEBOS
++
+         if (isTestModeEnabled())
+-            xdgDataHome = QDir::homePath() + QLatin1String("/.qttest/share");
++            xdgDataHome = homePath + QLatin1String("/.qttest/share");
+         if (xdgDataHome.isEmpty())
+-            xdgDataHome = QDir::homePath() + QLatin1String("/.local/share");
++            xdgDataHome = homePath + QLatin1String("/.local/share");
+         if (type == AppDataLocation || type == AppLocalDataLocation)
+             appendOrganizationAndApp(xdgDataHome);
+         return xdgDataHome;
+@@ -107,10 +126,17 @@
+     {
+         // http://standards.freedesktop.org/basedir-spec/latest/
+         QString xdgConfigHome = QFile::decodeName(qgetenv("XDG_CONFIG_HOME"));
++
++#ifdef Q_OS_WEBOS
++        QString homePath = QLatin1String(WEBOS_APPDATA_PATH);
++#else
++        QString homePath = QDir::homePath();
++#endif // Q_OS_WEBOS
++
+         if (isTestModeEnabled())
+-            xdgConfigHome = QDir::homePath() + QLatin1String("/.qttest/config");
++            xdgConfigHome = homePath + QLatin1String("/.qttest/config");
+         if (xdgConfigHome.isEmpty())
+-            xdgConfigHome = QDir::homePath() + QLatin1String("/.config");
++            xdgConfigHome = homePath + QLatin1String("/.config");
+         if (type == AppConfigLocation)
+             appendOrganizationAndApp(xdgConfigHome);
+         return xdgConfigHome;
+@@ -172,8 +198,15 @@
+ #ifndef QT_BOOTSTRAPPED
+     // http://www.freedesktop.org/wiki/Software/xdg-user-dirs
+     QString xdgConfigHome = QFile::decodeName(qgetenv("XDG_CONFIG_HOME"));
++
++#ifdef Q_OS_WEBOS
++        QString homePath = QLatin1String(WEBOS_APPDATA_PATH);
++#else
++        QString homePath = QDir::homePath();
++#endif // Q_OS_WEBOS
++
+     if (xdgConfigHome.isEmpty())
+-        xdgConfigHome = QDir::homePath() + QLatin1String("/.config");
++        xdgConfigHome = homePath + QLatin1String("/.config");
+     QFile file(xdgConfigHome + QLatin1String("/user-dirs.dirs"));
+     if (!isTestModeEnabled() && file.open(QIODevice::ReadOnly)) {
+         QHash<QString, QString> lines;
+@@ -236,12 +269,21 @@
+     switch (type) {
+     case DesktopLocation:
+         path = QDir::homePath() + QLatin1String("/Desktop");
++#ifdef Q_OS_WEBOS
++        path = QLatin1String(WEBOS_HOME_PATH);
++#endif // Q_OS_WEBOS
+         break;
+     case DocumentsLocation:
+         path = QDir::homePath() + QLatin1String("/Documents");
++#ifdef Q_OS_WEBOS
++        path = QLatin1String(WEBOS_HOME_PATH);
++#endif // Q_OS_WEBOS
+        break;
+     case PicturesLocation:
+         path = QDir::homePath() + QLatin1String("/Pictures");
++#ifdef Q_OS_WEBOS
++        path = QLatin1String(WEBOS_HOME_PATH);
++#endif // Q_OS_WEBOS
+         break;
+ 
+     case FontsLocation:
+@@ -250,13 +292,22 @@
+ 
+     case MusicLocation:
+         path = QDir::homePath() + QLatin1String("/Music");
++#ifdef Q_OS_WEBOS
++        path = QLatin1String(WEBOS_HOME_PATH);
++#endif // Q_OS_WEBOS
+         break;
+ 
+     case MoviesLocation:
+         path = QDir::homePath() + QLatin1String("/Videos");
++#ifdef Q_OS_WEBOS
++        path = QLatin1String(WEBOS_HOME_PATH);
++#endif // Q_OS_WEBOS
+         break;
+     case DownloadLocation:
+         path = QDir::homePath() + QLatin1String("/Downloads");
++#ifdef Q_OS_WEBOS
++        path = QLatin1String(WEBOS_HOME_PATH) + QLatin1String("/downloads");
++#endif // Q_OS_WEBOS
+         break;
+     case ApplicationsLocation:
+         path = writableLocation(GenericDataLocation) + QLatin1String("/applications");
+@@ -341,6 +392,11 @@
+             appendOrganizationAndApp(dirs[i]);
+         break;
+     case FontsLocation:
++#ifdef Q_OS_WEBOS
++        dirs = xdgDataDirs();
++        for (int i = 0; i < dirs.count(); ++i)
++            dirs[i].append(QLatin1String("/fonts"));
++#endif // Q_OS_WEBOS
+         dirs += QDir::homePath() + QLatin1String("/.fonts");
+         break;
+     default:

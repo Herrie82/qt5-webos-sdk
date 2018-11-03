@@ -1,3 +1,11 @@
-15a16,17
-> gn_args += use_udev=false
-> 
+--- embedded_linux.pri_orig	2018-10-30 23:29:15.218137162 +0300
++++ embedded_linux.pri	2018-10-30 23:30:23.765492947 +0300
+@@ -13,6 +13,8 @@
+     ozone_platform=\"qt\" \
+     toolkit_views=false
+ 
++gn_args += use_udev=false
++
+ use?(icecc) {
+     gn_args += use_debug_fission=false
+ }
