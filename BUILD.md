@@ -1,7 +1,7 @@
 How to build Qt
 ---------------
 
-Download Qt sources (**qt-everywhere-opensource-src-5.9.7.tar.xz**) from [official site](http://download.qt.io/official_releases/qt/5.9/5.9.7/single/) and untar it somewhere.
+Download Qt sources (**qt-everywhere-opensource-src-5.9.7.tar.xz**) from [official site](https://download.qt.io/archive/qt/5.9/5.9.7/single/) and untar it somewhere.
 
     mkdir /home/nizovn/webos/qt5/qt5.9
     tar xvf qt-everywhere-opensource-src-5.9.7.tar.xz -C /home/nizovn/webos/qt5/qt5.9
@@ -9,7 +9,7 @@ Download Qt sources (**qt-everywhere-opensource-src-5.9.7.tar.xz**) from [offici
 Download and untar gcc cross toolchain (**gcc-linaro-4.8-2015.06-x86\_64\_arm-linux-gnueabi.tar.xz**) from [linaro site](https://releases.linaro.org/archive/15.06/components/toolchain/binaries/4.8/arm-linux-gnueabi/).
 
     tar xvf gcc-linaro-4.8-2015.06-x86_64_arm-linux-gnueabi.tar.xz -C /home/nizovn/webos/qt5/qt5.9
-Copy **files/linux-webos-arm-gnueabi-g++** directory to **qt-everywhere-opensource-src-5.9.7/qtbase/mkspecs**. Edit **QT5\_WEBOS\_PATH** variable in **qmake.conf** to your directory.
+Copy **files/linux-webos-arm-gnueabi-g++** directory to **qt-everywhere-opensource-src-5.9.7/qtbase/mkspecs**. Edit **QT5\_WEBOS\_PATH** variable in **qmake.conf** to your directory where you extracted Qt to.
 
 Copy libraries and headers required for building Qt.
 
