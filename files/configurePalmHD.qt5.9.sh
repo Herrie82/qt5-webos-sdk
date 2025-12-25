@@ -1,10 +1,22 @@
-SYSROOT_PKG=/home/nizovn/webos/qt5/qt5.9/device/sysroot
+MY_WEBOS_FOLDER=/home/herrie/webos
+QT_FOLDER_PREFIX=qt
+QT_VERSION_MAJOR=5
+QT_VERSION_MINOR=9
+QT_VERSION_PATCH=7
+
+SYSROOT_PKG=$MY_WEBOS_FOLDER/$QT_FOLDER_PREFIX$QT_VERSION_MAJOR/$QT_FOLDER_PREFIX$QT_VERSION_MAJOR.$QT_VERSION_MINOR/device/sysroot
 export PKG_CONFIG_LIBDIR=$SYSROOT_PKG/usr/lib/pkgconfig
 export PKG_CONFIG_SYSROOT_DIR=$SYSROOT_PKG
 
-MY_PREFIX=/home/nizovn/webos/qt5/qt5.9/runtime
+#Needed to prevent OOM error while building QTWebEngine, adjust value based on number of available cores
+export NINAJAFLAGS=-j16
+
+MY_PREFIX=$MY_WEBOS_FOLDER/$QT_FOLDER_PREFIX$QT_VERSION_MAJOR/$QT_FOLDER_PREFIX$QT_VERSION_MAJOR.$QT_VERSION_MINOR/runtime
 WEBOS_PREFIX=/media/cryptofs/apps/usr/palm/applications/com.nizovn.qt5
 
+#disabled openssl-linked below for now, since this doesn't seem to work
+
+# -openssl-linked
 ./configure \
 -no-gcc-sysroot \
 -sysroot ${SYSROOT_PKG} \
@@ -15,7 +27,6 @@ WEBOS_PREFIX=/media/cryptofs/apps/usr/palm/applications/com.nizovn.qt5
 -confirm-license \
 -qt-freetype \
 -openssl \
--openssl-linked \
 -feature-accessibility \
 -accessibility \
 -skip qtandroidextras -skip qtactiveqt -skip qtdoc  \
